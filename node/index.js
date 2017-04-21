@@ -4,6 +4,7 @@ const path = require('path');
 const readline = require('readline');
 global.rootDir = path.resolve(__dirname);
 
+let pkg = fs.readFileSync(__dirname + '/package.json'); 
 function test(){
 	console.log("hello world");
 }
@@ -13,7 +14,7 @@ function help(){
 }
 
 function version(){
-	console.log("version");
+	console.log(JSON.parse(pkg).name + " version:" + JSON.parse(pkg).version);
 }
 
 const options = {
