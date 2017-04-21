@@ -1,0 +1,12 @@
+{
+  "name": "p2j",
+  "version": "1.0.0",
+  "description": "Utility for translating properties files into JSON",
+  "main": "index.js",
+  "keywords": [
+    "properties",
+    "json"
+  ],
+  "author": "Scott Olsen",
+  "license": "ISC"
+}
