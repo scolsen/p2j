@@ -24,6 +24,9 @@ convert () {
 		JTEXT="{"	
 		while read -r line
 		do
+			if [[ $line == "#"* ]]; then 
+				continue
+			fi
 			echo "$line"
 			rline="$(echo $line | sed s/=/:/)" 
 			echo "$rline"
