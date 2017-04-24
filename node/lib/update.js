@@ -4,30 +4,32 @@ const fs = require('fs');
 
 function parse(data){
 	let obj = {};
+	//console.log("\n" + data);
 	for (i = 0; i < data.length; i++){
-		if(data[i] == "--src" || data[i] == "-source" || data[i] == "-s"){
+		if(data[i] == "--src" || data[i] == "--source" || data[i] == "-s"){
 			obj.src = data[i + 1];
 		}
 		if(data[i] == "--tar" || data[i] == "--target" || data[i] == "-t" ){
 			obj.tar = data[i + 1];
 		}
 	}
-	
 	if(obj.tar.match(/.*.properties/)){
-		let src = fs.readFileSync(obj.src);
+		let src = JSON.parse(fs.readFileSync(obj.src));
 		let rl = readline.createInterface({
-			input: fs.createReadStream(obj.tar);
+			input: fs.createReadStream(obj.tar)
 		});
 		let val = "";
-		let jsrc = JSON.parse(src); 
 		rl.on('line', (line)=>{
 			let key = line.split('=', 2);
-			for(k in jsrc){
-				if(key[0] === k && key[1] !== jsrc[k]){
-					val = val + key[0] + "=" + jsrc[k] + "\n";	
-				} else {
-					val = val + line;
-				}
+			let kflg = false;
+			for(k in src){
+				if(key[0] === k && key[1] !== src[k]){
+					kflg = true;
+					val = val + key[0] + "=" + src[k] + "\n";	
+				} 
+			}
+			if(kflg === false){
+				val = val + key[0] + "=" + key[1] + "\n";
 			}
 		});
 		rl.on('close', (err)=>{
@@ -42,9 +44,9 @@ function parse(data){
 		let jobj = {};
 		let jtar = JSON.parse(fs.readFileSync(obj.tar));
 		let rl = rl.createInterface({
-			input: fs.createReadStream(obj.src);
+			input: fs.createReadStream(obj.src)
 		});
-		rl.on('line' (line)=>{
+		rl.on('line', (line)=>{
 			let key = line.split('=', 2);
 			for(k in jtar){
 				if(key[0] === k && key[1] !== jtar[k]){
@@ -67,8 +69,8 @@ function parse(data){
 	}
 }
 
-module.exports = function (){
-	parse(opts[i]);
+module.exports = function (opts){
+	parse(opts);
 	console.log("Update complete. Exiting.");
 	process.exitCode = 0;
 }
