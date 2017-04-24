@@ -65,11 +65,21 @@ convert () {
 }
 
 update () {
-echo "test"
+	if [[ $TAR_FILE == *".properties" ]]; then 
+		
+	elif [[ $TAR_FILE == *".json"  ]]; then 
+
+	else 
+
+	fi
 }
 
 append () {
 echo "test"
+}
+
+help_me () {
+	echo -e "\033[1mName:\033[0m\n\tp2j\n\033[1mUsage:\033[0m\n\tp2j [option] [files...]\n\033[1mDescription:\033[0m\n\tp2j is a utility for converting json files to properties format and vice versa.\n\033[1m--convert | -c\033[0m\n\tConvert option. Convert input json files to properties, and input properties to json. Saves new files to the original file location."
 }
 
 while test $# -gt 0
@@ -79,7 +89,7 @@ do
 			version
 			;;
 		--help | -h )
-			help
+			help_me
 			;;
 		--convert | -c )
 			CONVERT=1
