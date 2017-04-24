@@ -43,7 +43,7 @@ function parse(data){
 	} else if (obj.tar.match(/.*.json/)) {
 		let jobj = {};
 		let jtar = JSON.parse(fs.readFileSync(obj.tar));
-		let rl = rl.createInterface({
+		let rl = readline.createInterface({
 			input: fs.createReadStream(obj.src)
 		});
 		rl.on('line', (line)=>{
