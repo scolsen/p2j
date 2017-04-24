@@ -5,12 +5,9 @@ const readline = require('readline');
 global.rootDir = path.resolve(__dirname);
 
 let pkg = fs.readFileSync(__dirname + '/package.json'); 
-function test(){
-	console.log("hello world");
-}
 
 function help(){
-	console.log("help");
+	console.log("Name:\n\tp2j\nUsage:\n\tp2j [mode] [files...] [--source] [file] [--target] [file]\nDescription:\n\tp2j is a utility for converting json files to properties files and vice versa.");
 }
 
 function version(){
@@ -23,7 +20,6 @@ const options = {
 	"update" : require(rootDir + "/lib/update.js"),
 	"append" : require(rootDir + "/lib/append.js"),
 	"convert" : require(rootDir + "/lib/convert.js"),
-	"test" : test
 }
 
 function parseArgs(a){
