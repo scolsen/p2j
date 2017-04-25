@@ -7,6 +7,9 @@
     "properties",
     "json"
   ],
+  "bin":{
+	"p2j":"index.js"
+	},
   "author": "Scott Olsen",
   "license": "ISC"
 }
