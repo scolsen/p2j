@@ -7,9 +7,17 @@
     "properties",
     "json"
   ],
+  "repository": {
+  	"type":"git",
+	"url":"git+https://github.com/scolsen/p2j"
+  },
   "bin":{
 	"p2j":"index.js"
 	},
+  "bugs":{
+  	"url":"https://github.com/scolsen/p2j/issues"
+  },
+  "homepage":"https://github.com/scolsen/p2j#readme",
   "author": "Scott Olsen",
   "license": "ISC"
 }
