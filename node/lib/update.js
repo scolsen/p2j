@@ -53,7 +53,7 @@ function parse(data){
 			input: fs.createReadStream(obj.src)
 		});
 		rl.on('line', (line)=>{
-			if(line.match(/[^\]#|[^\]!/)){
+			if(line.match(/^#.*|^!.*/)){
 				return;//skip comments
 			}
 			let key = line.split('=', 2);
