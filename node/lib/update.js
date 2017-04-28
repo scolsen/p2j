@@ -21,9 +21,9 @@ function parse(data){
 		let val = "";
 		rl.on('line', (line)=>{
 			if(line === ""){
-				//blank skip
+				val = val + line;
 			} else if(line.match(/^#.*|^!.*/)){
-				//skip comments
+				val = val + line;
 			} else {
 				let key = line.split('=', 2);
 				let kflg = false;
