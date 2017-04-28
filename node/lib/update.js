@@ -20,6 +20,9 @@ function parse(data){
 		});
 		let val = "";
 		rl.on('line', (line)=>{
+			if(line.match(/[^\]#|[^\]!/)){
+				return;//skip comments
+			}
 			let key = line.split('=', 2);
 			let kflg = false;
 			for(k in src){
@@ -47,6 +50,9 @@ function parse(data){
 			input: fs.createReadStream(obj.src)
 		});
 		rl.on('line', (line)=>{
+			if(line.match(/[^\]#|[^\]!/)){
+				return;//skip comments
+			}
 			let key = line.split('=', 2);
 			for(k in jtar){
 				if(key[0] === k && key[1] !== jtar[k]){
