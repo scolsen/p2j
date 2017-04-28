@@ -20,19 +20,22 @@ function parse(data){
 		});
 		let val = "";
 		rl.on('line', (line)=>{
-			if(line.match(/[^\]#|[^\]!/)){
-				return;//skip comments
-			}
-			let key = line.split('=', 2);
-			let kflg = false;
-			for(k in src){
-				if(key[0] === k && key[1] !== src[k]){
-					kflg = true;
-					val = val + key[0] + "=" + src[k] + "\n";	
-				} 
-			}
-			if(kflg === false){
-				val = val + key[0] + "=" + key[1] + "\n";
+			if(line === ""){
+				//blank skip
+			} else if(line.match(/^#.*|^!.*/)){
+				//skip comments
+			} else {
+				let key = line.split('=', 2);
+				let kflg = false;
+				for(k in src){
+					if(key[0] === k && key[1] !== src[k]){
+						kflg = true;
+						val = val + key[0] + "=" + src[k] + "\n";	
+					} 
+				}
+				if(kflg === false){
+					val = val + key[0] + "=" + key[1] + "\n";
+				}
 			}
 		});
 		rl.on('close', (err)=>{
