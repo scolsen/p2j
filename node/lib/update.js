@@ -20,10 +20,10 @@ function parse(data){
 		});
 		let val = "";
 		rl.on('line', (line)=>{
-			if(line === ""){
-				val = val + line;
+			if(line === "" || line === "\n"){
+				val = val + line + "\n";
 			} else if(line.match(/^#.*|^!.*/)){
-				val = val + line;
+				val = val + line + "\n";
 			} else {
 				let key = line.split('=', 2);
 				let kflg = false;
