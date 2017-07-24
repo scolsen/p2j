@@ -21,9 +21,9 @@ function parse(data){
 		let val = "";
 		rl.on('line', (line)=>{
 			if(line === "" || line === "\n"){
-				val = val + line + "\n";
-			} else if(line.match(/^#.*|^!.*/)){
-				val = val + line + "\n";
+				val = val + line;
+			} else if (line.match(/^#.*|^!.*/)){
+				val = val + line;
 			} else {
 				let key = line.split('=', 2);
 				let kflg = false;
@@ -41,7 +41,7 @@ function parse(data){
 		rl.on('close', (err)=>{
 			try {
 				fs.writeFileSync(obj.tar, val);
-				console.log("Updated" + obj.tar);
+				console.log("Updated " + obj.tar);
 			} catch(e) {
 				console.log("Error writing file" + e);
 			}
@@ -68,7 +68,7 @@ function parse(data){
 		rl.on('close', ()=>{
 			try {
 				fs.writeFileSync(obj.tar, JSON.stringify(jtar));
-				console.log('updated' + obj.tar);
+				console.log('updated ' + obj.tar);
 			} catch (e) {
 				console.log("Error writing file.", e);
 			}		
