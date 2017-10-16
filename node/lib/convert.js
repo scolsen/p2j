@@ -1,7 +1,7 @@
 const fs = require('fs');
 const readline = require('readline');
 
-function parse(data){
+function parse(data, reg){
 	let properties = {};
 	let jProps = "";
 	if(data.match(/.*.properties/)){
