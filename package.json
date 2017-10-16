@@ -1,0 +1,23 @@
+{
+  "name": "p2j",
+  "version": "1.0.0",
+  "description": "Utility for translating properties files into JSON",
+  "main": "index.js",
+  "keywords": [
+    "properties",
+    "json"
+  ],
+  "repository": {
+  	"type":"git",
+	"url":"git+https://github.com/scolsen/p2j"
+  },
+  "bin":{
+	"p2j":"./index.js"
+	},
+  "bugs":{
+  	"url":"https://github.com/scolsen/p2j/issues"
+  },
+  "homepage":"https://github.com/scolsen/p2j#readme",
+  "author": "Scott Olsen",
+  "license": "ISC"
+}
