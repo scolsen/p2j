@@ -2,8 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
-const program = require('commander');
-global.rootDir = path.resolve(__dirname);
+let program = require('commander');
 
 let pkg = fs.readFileSync(__dirname + '/package.json'); 
 
