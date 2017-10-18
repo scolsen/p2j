@@ -1,6 +1,6 @@
-const fs = require('fs');
-const readline = require('readline');
-const Converter = require('./lib/LineProcess.js').Converter;
+const Converter = require('./lib/LineProcess').Converter;
+const LineReader = require('./lib/LineReader').LineReader;
+const shared = require('./lib/shared');
 
 let program = require('commander');
 
@@ -13,38 +13,37 @@ function swapExt(file){
     }
 }
 
-function parse(data, reg){
-	if(file.endsWith(".properties")){
-            let app = new Converter({ json: {} });
-            let rl = readline.createInterface({
-                input: fs.createReadStream(file)
-            });
-            rl.on('line', (line)=>{
-                app.pmode(line);
-            });
-            rl.on('close', (err)=>{
-                shared.writeFile(swapExt(file), process.json); 
-             });
-        }
-        if(file.endsWith(".json")){
-            let app = new Converter({ json: shared.readJSON(file) });
-            app.jmode();
-            shared.writeFile(swapExt(file), app.result);
-        }
+function parse(file){
+   if(!shared.checkExt(file)){
+       console.log("Error: Input file: " + file +  " is neither a json nor properties file. Skipping.");
+       return;
+   }
+   new LineReader({
+       source: null,
+       file: file,
+       lineProcessor: new Converter(),
+       filewriter: shared.writeFile,
+       output: program.output
+   }).read();
 }
 
-program 
-    .parse(process.argv);
+program
+    .option('-o --output <path>')
+    .arguments('[files...]')
+    .action(function(files){
+        program.files = files;
+    });
+program.parse(process.argv);
 
-let files = program.args; //one or more files to update
-
-if(!files.length){
+if(!program.files.length){
     console.log("One or more target files are required.");
     process.exit(1);
 }
 
-files.forEach((file)=>{
-   parse(file);
+program.files.forEach((file)=>{
+    if(program.output === undefined) program.output = swapExt(file);
+    parse(file);
+    if(program.output === swapExt(file)) program.output = undefined;
 });
 
-console.log("Update complete");
+console.log("File converted");
