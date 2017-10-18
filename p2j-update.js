@@ -2,6 +2,7 @@
 const shared = require('./lib/shared');
 const LineReader = require('./lib/LineReader').LineReader;
 const Updater = require('./lib/LineProcess').Updater;
+const Converter = require('./lib/LineProcess').Converter;
 
 let program = require('commander');
 
@@ -11,13 +12,24 @@ function parse(source, file){
 	        return;
         }
 
+       if(source.endsWith('.properties') && file.endsWith('.properties')
+        || source.endsWith('.json') && file.endsWith('.json')){
+            new LineReader({
+                source: source,
+                file: file,
+                lineProcessor: new Converter(),
+                filewriter: shared.writeFile,
+                output: shared.swapExt(program.output)
+            }).read(file, new Updater(), shared.writeFile, program.output);
+       } else {
         new LineReader({
-            source: source,
+            source: shared.swapExt(source),
             file: file,
             lineProcessor: new Updater(),
             filewriter: shared.writeFile,
             output: program.output
         }).read();
+       }
 }
 
 program 

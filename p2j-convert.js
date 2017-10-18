@@ -4,15 +4,6 @@ const shared = require('./lib/shared');
 
 let program = require('commander');
 
-function swapExt(file){
-    if(file.endsWith(".properties")){
-        return file.replace(/\.properties/, ".json");
-    }
-    if(file.endsWith(".json")){
-        return file.replace(/\.json/, ".properties");
-    }
-}
-
 function parse(file){
    if(!shared.checkExt(file)){
        console.log("Error: Input file: " + file +  " is neither a json nor properties file. Skipping.");
@@ -41,9 +32,9 @@ if(!program.files.length){
 }
 
 program.files.forEach((file)=>{
-    if(program.output === undefined) program.output = swapExt(file);
+    if(program.output === undefined) program.output = shared.swapExt(file);
     parse(file);
-    if(program.output === swapExt(file)) program.output = undefined;
+    if(program.output === shared.swapExt(file)) program.output = undefined;
 });
 
 console.log("File converted");
