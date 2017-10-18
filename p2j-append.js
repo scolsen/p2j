@@ -1,24 +1,24 @@
 //append.js
-const fs = require('fs');
-const readline = require('readline');
-const program = require('commander');
+let program = require('commander');
 const shared = require('./lib/shared.js');
 const Appender = require('./lib/LineProcess.js').Appender;
+const LineReader = require('./lib/LineReader').LineReader;
 
 function parse(source, file){
-        if(file.endsWith(".properties")){
-	    let app = new Appender({ json: shared.readJSON(source) });
-            shared.updateProperties(file, app, shared.appendFile); 
+	    if(!shared.checkExt(file)){
+	        console.log("Error: Input file: " + file +  " is neither a json nor properties file. Skipping.");
+	        return;
         }
-	if (file.endsWith(".json")){
-            let app = new Appender({ json: shared.readJSON(file) });
-            shared.updateJSON(source, file, app, shared.appendFile);		
-	} else {
-	    console.log("Error: Input file: " + file +  " is niether a json nor properties file. Skipping.");
-	}
+        new LineReader({
+            source: source,
+            file: file,
+            lineProcessor: new Appender({ json: {} }),
+            filewriter: shared.appendFile,
+            output: program.output}).read();
 }
 
 program 
+    .option('-o --output <path>', "Optional filename for output.")
     .arguments('<source> [files...]')
     .action(function (source, files){
         program.source = source;
@@ -28,7 +28,7 @@ program
 program.parse(process.argv);
 
 //console.log(program.source, program.files); //debug
-if(!program.source.endsWith('.json') || !program.source.endsWith('.properties')) {
+if(!program.source.endsWith('.json') && !program.source.endsWith('.properties')) {
     console.log("Source file:" + program.source + " is neither a json or properties file. Exiting.");
     process.exit(1);
 }
@@ -39,6 +39,8 @@ if(!program.files.length){
 }
 
 program.files.forEach((file)=>{
-   parse(program.source, file);
+    if(program.output === undefined) program.output = file;
+    parse(program.source, file);
+    if(program.output === file) program.output = undefined;
 });
 
