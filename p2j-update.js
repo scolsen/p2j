@@ -1,61 +1,49 @@
 //update properties file using json
-const readline = require('readline');
-const fs = require('fs');
-const shared = require('./lib/shared.js');
+const shared = require('./lib/shared');
+const LineReader = require('./lib/LineReader').LineReader;
+const Updater = require('./lib/LineProcess').Updater;
 
 let program = require('commander');
 
-function updateProperties(json, file){
-    let rl = readline.createInterface({
-        input: fs.createReadStream(file)
-    });
-    let val = "";
-    rl.on('line', (line)=>{
-        val = processLine({ line: line, container: val, json: json, mode: 'properties' });
-    });
-    rl.on('close', (err)=>{
-       shared.writeFile(file, val); 
-    });
-}
-
-function updateJSON(source, file){
-    let json = JSON.parse(fs.readFileSync(file));
-    let rl = readline.createInterface({
-        input: fs.createReadStream(source)
-    });
-    rl.on('line', (line)=>{
-       processLine({ line: line, container: "", json: json, mode: 'json' }); 
-    });
-    rl.on('close', ()=>{
-        shared.writeFile(file, JSON.stringify(json));
-    });
-}
-
 function parse(source, file){
-	if(file.endsWith(".properties")){
-	    updateProperties(JSON.parse(fs.readFileSync(source)), file);	
-            return;	
-        } 
-        if(file.endsWith(".json")){
-            updateJSON(source, file); 
-            return; 
+    	if(!shared.checkExt(file)){
+	        console.log("Error: Input file: " + file +  " is neither a json nor properties file. Skipping.");
+	        return;
         }
-	console.log("Target file is niether a properties or json file.");	
+
+        new LineReader({
+            source: source,
+            file: file,
+            lineProcessor: new Updater(),
+            filewriter: shared.writeFile,
+            output: program.output
+        }).read();
 }
 
 program 
-    .option('-s, --source <source>', 'Source file')
-    .parse(process.argv);
+    .option('-o, --output <path>', 'Optional output path')
+    .arguments('<source> [files...]')
+    .action(function(source, files){
+       program.source = source;
+       program.files = files;
+    });
 
-let files = program.args; //one or more files to update
+program.parse(process.argv);
 
-if(!files.length){
+if(!program.source.endsWith('.json') && !program.source.endsWith('.properties')) {
+    console.log("Source file:" + program.source + " is neither a json or properties file. Exiting.");
+    process.exit(1);
+}
+
+if(!program.files.length){
     console.log("One or more target files are required.");
     process.exit(1);
 }
 
-files.forEach((file)=>{
+program.files.forEach((file)=>{
+   if(program.output === undefined) program.output = file;
    parse(program.source, file);
+   if(program.output === file) program.output = undefined;
 });
 
 console.log("Update complete");
