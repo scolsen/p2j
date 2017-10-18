@@ -1,7 +1,7 @@
 //update properties file using json
 const readline = require('readline');
 const fs = require('fs');
-const shared = require('./shared.js');
+const shared = require('./lib/shared.js');
 
 let program = require('commander');
 
@@ -25,6 +25,7 @@ function updateJSON(source, file){
     });
     rl.on('line', (line)=>{
        processLine({ line: line, container: "", json: json, mode: 'json' }); 
+    });
     rl.on('close', ()=>{
         shared.writeFile(file, JSON.stringify(json));
     });

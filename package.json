@@ -12,7 +12,7 @@
     "url": "git+https://github.com/scolsen/p2j"
   },
   "bin": {
-    "p2j": "./index.js"
+    "p2j": "./p2j.js"
   },
   "bugs": {
     "url": "https://github.com/scolsen/p2j/issues"

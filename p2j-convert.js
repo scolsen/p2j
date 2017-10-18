@@ -1,6 +1,6 @@
 const fs = require('fs');
 const readline = require('readline');
-const Converter = require('./LineProcess.js').Converter;
+const Converter = require('./lib/LineProcess.js').Converter;
 
 let program = require('commander');
 
