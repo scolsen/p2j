@@ -12,8 +12,7 @@ function parse(source, file){
 	        return;
         }
 
-       if(source.endsWith('.properties') && file.endsWith('.properties')
-        || source.endsWith('.json') && file.endsWith('.json')){
+       if(false){
             new LineReader({
                 source: source,
                 file: file,
@@ -23,7 +22,7 @@ function parse(source, file){
             }).read(file, new Updater(), shared.writeFile, program.output);
        } else {
         new LineReader({
-            source: shared.swapExt(source),
+            source: source,
             file: file,
             lineProcessor: new Updater(),
             filewriter: shared.writeFile,
